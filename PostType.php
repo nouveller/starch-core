@@ -7,7 +7,8 @@ namespace Starch\Core;
  * Post types models should inherit from Post
  * @package default
  */
-class PostType {
+class PostType
+{
     // Reserved property names that can't be used for meta boxes
     private static $reserved_properties = array(
         'id',
@@ -66,7 +67,7 @@ class PostType {
             self::$models[$model::$type] = $type;
             Router::add_type($model::$type, $type);
 
-            $class::register();
+            $model::register();
         }
 
         // Create a hash of the post types

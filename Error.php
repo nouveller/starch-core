@@ -20,7 +20,9 @@ class Error
     {
         $this->e = $e;
 
-        if (ENV === 'development') {
+        Log::log(get_class($e));
+
+        if (ENV === 'development' || $e->important) {
             $this->display();
             exit;
         } else {

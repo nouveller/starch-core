@@ -21,7 +21,7 @@ class Controller
     public function display()
     {
         if (!isset($this->content)) {
-            throw new \Exception('Content not set');
+            throw new Exception('Content not set');
         }
 
         echo $this->content;

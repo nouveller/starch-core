@@ -20,7 +20,7 @@ class View
         $path = APP . 'views/' . $path . '.php';
 
         if (!file_exists($path)) {
-            throw new \Exception('Template does not exist: ' . $path);
+            throw new Exception('Template does not exist: ' . $path);
             return false;
         }
 

@@ -51,11 +51,11 @@ class PostType {
             $class = '\Starch\Model\\' . $type;
 
             if (!class_exists($class)) {
-                throw new \Exception("$class could not be found");
+                throw new Exception("$class could not be found");
             }
 
             if (!isset($class::$type)) {
-                throw new \Exception("$class missing \$type property");
+                throw new Exception("$class missing \$type property");
             }
 
             self::$models[$class::$type] = $type;
@@ -137,7 +137,7 @@ class PostType {
     public static function valid_property($name)
     {
         if (in_array($name, self::$reserved_properties)) {
-            throw new \Exception('Cannot use "' . $name . '": custom field property names cannot include: ' . implode(', ', self::$reserved_properties));
+            throw new Exception('Cannot use "' . $name . '": custom field property names cannot include: ' . implode(', ', self::$reserved_properties));
         }
     }
 
@@ -151,7 +151,7 @@ class PostType {
         $class = '\Starch\Model\\' . self::$models[$post->post_type];
 
         if (!class_exists($class)) {
-            throw new \Exception('Class "' . $class . '" not found - for post type "' . $post->post_type . '"');
+            throw new Exception('Class "' . $class . '" not found - for post type "' . $post->post_type . '"');
         }
 
         return new $class($post);
@@ -272,7 +272,7 @@ class PostType {
     public final function populate(&$post)
     {
         if (get_class($post) !== 'WP_Post') {
-            throw new \Exception('Must be a WordPress Post object (WP_Post)');
+            throw new Exception('Must be a WordPress Post object (WP_Post)');
         }
 
         $id = $post->ID;

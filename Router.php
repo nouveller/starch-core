@@ -66,7 +66,7 @@ class Router
     protected static function add_route($url, $options)
     {
         if (count($options) < 2) {
-            throw new \Exception('Routes require at least two arguments ($controller, $method, $vars)');
+            throw new Exception('Routes require at least two arguments ($controller, $method, $vars)');
         }
 
         $controller = $options[0];
@@ -194,7 +194,7 @@ class Router
 
             if (!class_exists($controller)) {
                 if (ENV === 'development') {
-                    throw new \Exception("{$controller} does not exist");
+                    throw new Exception("{$controller} does not exist");
                 }
             }
 
@@ -218,7 +218,7 @@ class Router
         // Check that the class and method exist, if not respond with a 500 error
         if (!class_exists($controller) || !method_exists($controller, 'action_' . $action)) {
             if (ENV === 'development') {
-                throw new \Exception("{$controller}::{$action} does not exist");
+                throw new Exception("{$controller}::{$action} does not exist");
             } else {
                 self::error(500);
                 return;

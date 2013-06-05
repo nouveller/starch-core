@@ -48,18 +48,23 @@ class PostType {
 
         // Register each post type
         foreach ($types as $type) {
-            $class = '\Starch\Model\\' . $type;
+            $model = '\Starch\Model\\' . $type;
+            $controller = '\Starch\Controller\\' . $type;
 
-            if (!class_exists($class)) {
-                throw new Exception("$class could not be found");
+            if (!class_exists($model)) {
+                throw new Exception("$model could not be found");
             }
 
-            if (!isset($class::$type)) {
-                throw new Exception("$class missing \$type property");
+            if (!isset($model::$type)) {
+                throw new Exception("$model missing \$type property");
             }
 
-            self::$models[$class::$type] = $type;
-            Router::add_type($class::$type, $type);
+            if (!class_exists($controller)) {
+                throw new Exception("$controller could not be found");
+            }
+
+            self::$models[$model::$type] = $type;
+            Router::add_type($model::$type, $type);
 
             $class::register();
         }

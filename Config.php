@@ -67,6 +67,16 @@ class Config
      * @return void
      */
     public static function setup() {
+        if (ENV !== 'development' && WP_DEBUG === true) {
+            $e = new Exception('WP_DEBUG should not be set to true in a non-development environment');
+            $e->important = true;
+            throw $e;
+        }
+
+        if (ENV === 'development' && WP_DEBUG === false) {
+            throw new Exception('WP_DEBUG (in wp-config.php) should be set to true in a development environment');
+        }
+
         add_action('after_setup_theme', function () {
             // Add excerpts to pages
             if (\Starch\Core\Config::get('page_excerpts')) {

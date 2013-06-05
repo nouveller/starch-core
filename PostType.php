@@ -367,6 +367,12 @@ class PostType {
         return date($format, $date);
     }
 
+    public function edit_link($text = 'Edit') {
+        if ($this->post['edit_link']) {
+            return '<a href="' . $this->post['edit_link'] . '">' . $text . '</a>';
+        }
+    }
+
 
     /**
      * Lazy Loading Functions

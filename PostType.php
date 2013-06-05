@@ -34,7 +34,7 @@ class PostType {
     protected static $__built_in = false;
 
     // Keeps track of what type uses what model
-    private static $models = array();
+    protected static $models = array();
 
     /**
      * Load in custom post types
@@ -54,10 +54,14 @@ class PostType {
                 throw new \Exception("$class could not be found");
             }
 
-            $class::register();
+            if (!isset($class::$type)) {
+                throw new \Exception("$class missing \$type property");
+            }
 
-            self::$models[$class::$post_type] = $class;
-            Router::add_type($class::$post_type, $type);
+            self::$models[$class::$type] = $type;
+            Router::add_type($class::$type, $type);
+
+            $class::register();
         }
 
         // Create a hash of the post types
@@ -78,45 +82,50 @@ class PostType {
      */
     protected static final function register()
     {
+        // Don't run for built in types
         if (static::$__built_in) {
             return;
         }
 
+        // Defaults
+        $singular = isset(static::$names) && isset(static::$names['singular']) ? static::$names['singular'] : self::$models[static::$type];
+        $plural = isset(static::$names) && isset(static::$names['plural']) ? static::$names['plural'] : $singular . 's';
+
         $properties = array(
+            'public' => true,
             'labels' => array(
-                'name' => static::$post_name['plural'],
-                'singular_name' => static::$post_name['singular'],
-                'add_new' => 'Add ' . static::$post_name['singular'],
-                'add_new_item' => 'Add New ' . static::$post_name['singular'],
-                'edit_item' => 'Edit ' . static::$post_name['singular'],
-                'view_item' => 'View ' . static::$post_name['singular'],
-                'new_item' => 'New ' . static::$post_name['singular'],
-                'search_items' => 'Search ' . static::$post_name['plural']
+                'name' => $plural,
+                'singular_name' => $singular,
+                'add_new' => 'Add ' . $singular,
+                'add_new_item' => 'Add New ' . $singular,
+                'edit_item' => 'Edit ' . $singular,
+                'view_item' => 'View ' . $singular,
+                'new_item' => 'New ' . $singular,
+                'search_items' => 'Search ' . $plural
             ),
+            'supports' => isset(static::$supports) ? static::$supports : array('title', 'editor'),
             'has_archive' => isset(static::$archive) ? static::$archive : true,
             'rewrite' => array(
-                'slug' => isset(static::$slug) ? static::$slug : static::$post_type
+                'slug' => isset(static::$slug) ? static::$slug : static::$type
             ),
             'menu_position' => isset(static::$menu_position) ? static::$menu_position : 20,
-            'supports' => static::$supports,
-            'public' => true,
             'exclude_from_search' => (isset(static::$public) && !static::$public) ? true : false,
             'publicly_queryable' => (isset(static::$public) && !static::$public) ? false : true
         );
 
         // Check if admin menu icon exists
-        $icon_path = 'admin/icons/' . static::$post_type . '.png';
+        $icon_path = 'admin/icons/' . static::$type . '.png';
 
         if (file_exists(PATH . 'assets/' . $icon_path)) {
             $properties['menu_icon'] = ASSETS . $icon_path;
         }
 
         // Register post type with WordPress
-        register_post_type(static::$post_type, $properties);
+        register_post_type(static::$type, $properties);
 
         // Register meta boxes
         if (isset(static::$custom_fields)) {
-            new MetaBoxes(static::$post_type, static::$custom_fields);
+            new MetaBoxes(static::$type, static::$custom_fields);
         }
     }
 
@@ -139,7 +148,7 @@ class PostType {
      */
     public static function create(&$post)
     {
-        $class = self::$models[$post->post_type];
+        $class = '\Starch\Model\\' . self::$models[$post->post_type];
 
         if (!class_exists($class)) {
             throw new \Exception('Class "' . $class . '" not found - for post type "' . $post->post_type . '"');

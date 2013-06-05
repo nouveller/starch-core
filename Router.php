@@ -192,6 +192,12 @@ class Router
             $post_type = get_query_var('post_type') ? get_query_var('post_type') : $post->post_type;
             $controller = '\Starch\Controller\\' . static::$types[$post_type];
 
+            if (!class_exists($controller)) {
+                if (ENV === 'development') {
+                    throw new \Exception("{$controller} does not exist");
+                }
+            }
+
             if (have_posts()) {
                 if (is_archive()) {
                     $action = 'archive';
@@ -211,8 +217,12 @@ class Router
 
         // Check that the class and method exist, if not respond with a 500 error
         if (!class_exists($controller) || !method_exists($controller, 'action_' . $action)) {
-            self::error(500);
-            return;
+            if (ENV === 'development') {
+                throw new \Exception("{$controller}::{$action} does not exist");
+            } else {
+                self::error(500);
+                return;
+            }
         }
 
         if ($post) {

@@ -10,7 +10,7 @@ use Starch\Core\PostType;
 class Attachment extends PostType
 {
     protected static $__built_in = true;
-    public static $post_type = 'attachment';
+    public static $type = 'attachment';
 
     protected $meta = null;
 

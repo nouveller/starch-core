@@ -169,7 +169,7 @@ class Router
                 // Load the front page
                 $post = get_post($page_id);
 
-                $controller = '\Starch\Controller\Main';
+                $controller = '\Starch\Controller\Page';
                 $action = 'index';
             } else {
                 $controller = '\Starch\Controller\Post';

@@ -1,9 +1,7 @@
-# Starch
-## For WordPress
-### Core Files
+# Starch (for WordPress) - Core Files
 
-These are the Core file for Starch.
+These are the Core files for Starch.
 
-You should clone the main repository and use sub-modules.
+You should clone the main repository and use `git submodule init && git submodule update`
 
 [https://github.com/smallhadroncollider/starch](https://github.com/smallhadroncollider/starch)

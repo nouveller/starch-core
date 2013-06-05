@@ -68,7 +68,7 @@ class Config
      */
     public static function setup() {
         if (ENV !== 'development' && WP_DEBUG === true) {
-            $e = new Exception('WP_DEBUG should not be set to true in a non-development environment');
+            $e = new Exception('WP_DEBUG (in wp-config.php) should not be set to true in a non-development environment');
             $e->important = true;
             throw $e;
         }

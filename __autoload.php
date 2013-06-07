@@ -102,4 +102,10 @@ namespace
             }
         }
     );
+
+    $composer = APP . 'vendor/autoload.php';
+
+    if (file_exists($composer)) {
+        include_once($composer);
+    }
 }

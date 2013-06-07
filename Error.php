@@ -20,13 +20,11 @@ class Error
     {
         $this->e = $e;
 
-        Log::log(get_class($e));
-
         if (ENV === 'development' || $e->important) {
             $this->display();
             exit;
         } else {
-            Log::log($e->getMessage(), $e->getTraceAsString());
+            Log::log_to(APP . 'error.log', array($e->getMessage(), $e->getTraceAsString()));
             Router::error(500);
         }
     }
@@ -45,4 +43,52 @@ class Error
     </div>
     <?php
     }
+
+/*
+    public static function setup() {
+        set_error_handler(array('\Starch\Core\Error', 'handle_error'), E_ALL);
+        register_shutdown_function(array('\Starch\Core\Error', 'handle_fatal_error'));
+    }
+
+    public static function handle_error($number, $string, $file, $line, $fatal = false)
+    {
+        if (ENV !== 'development') {
+            Log::log_to(APP . 'error.log', array($string, "$line: $file"));
+
+            if ($fatal) {
+                Router::error(500);
+            }
+        } else {
+        ?>
+            <div style="margin: 3em auto; width: 80%; border: 1px solid black; padding: 1em; background: #719aa0; color: #e7e4d4; font-family: sans-serif;">
+                <pre style="font-size: 1.2em; white-space: pre-wrap; margin-bottom: 2em"><?= $string ?></pre>
+                <ul>
+                    <li>File: <?= $file ?></li>
+                    <li>Line: <?= $line ?></li>
+                    <li>Error Number: <?= $number ?></li>
+                </ul>
+            </div>
+        <?php
+        }
+    }
+
+    public static function handle_fatal_error()
+    {
+        $number   = E_CORE_ERROR;
+        $string  = "Shutdown";
+        $file = "Unknown File";
+        $line = 0;
+
+        $error = error_get_last();
+
+        if($error !== null) {
+            $number   = $error["type"];
+            $string  = $error["message"];
+            $file = $error["file"];
+            $line = $error["line"];
+        }
+
+        self::handle_error($number, $string, $file, $line, true);
+    }
+*/
 }

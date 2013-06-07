@@ -186,7 +186,7 @@ class PostType
     public static function all()
     {
         $posts = get_posts(array(
-            'post_type' => static::$post_type,
+            'post_type' => static::$type,
             'numberposts' => -1
         ));
 
@@ -212,7 +212,7 @@ class PostType
     public static function named($attr)
     {
         $posts = get_posts(array(
-            'post_type' => static::$post_type,
+            'post_type' => static::$type,
             'name' => $attr,
             'numberposts' => 1,
             'post_status' => 'any'
@@ -229,7 +229,7 @@ class PostType
      */
     public static function get($attr, $single = false)
     {
-        $type = static::$post_type;
+        $type = static::$type;
 
         $defaults = array(
             'post_type' => $type

@@ -215,7 +215,7 @@ class Router
 
         // Check that the class and method exist, if not respond with a 500 error
         if (!class_exists($controller) || !method_exists($controller, 'action_' . $action)) {
-            throw new Exception("{$controller}::{$action} does not exist");
+            throw new Exception("{$controller}::action_{$action} does not exist");
         }
 
         if ($post) {

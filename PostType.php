@@ -257,7 +257,7 @@ class PostType
      */
 
     // Has the post object been populated
-    public $populated = false;
+    private $populated = false;
 
     // Data store - uses magic method __get to access
     protected $post = array();
@@ -390,6 +390,15 @@ class PostType
         if ($this->post['edit_link']) {
             return '<a href="' . $this->post['edit_link'] . '">' . $text . '</a>';
         }
+    }
+
+    /**
+     * Does the post exist?
+     * @return Boolean
+     */
+    public function exists()
+    {
+        return $this->populated && (bool)$this->id;
     }
 
 

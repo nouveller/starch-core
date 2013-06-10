@@ -288,12 +288,12 @@ class PostType
         $id = $post->ID;
 
         $this->post['id'] = $id;
+        $this->post['name'] = $post->post_name;
         $this->post['title'] = $post->post_title;
         $this->post['link'] = get_permalink($id);
         $this->post['type'] = $post->post_type;
         $this->post['date'] = $post->post_date;
         $this->post['modified'] = $post->post_modified;
-        $this->post['slug'] = $post->post_name;
         $this->post['edit_link'] = current_user_can('edit_post', $id) ? get_edit_post_link($id) : false;
         $this->post['excerpt'] = $post->post_excerpt;
         $this->post['unfiltered_content'] = $post->post_content;

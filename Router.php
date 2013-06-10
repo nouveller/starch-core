@@ -262,6 +262,7 @@ class Router
 
         $page->after();
         $page->display();
+        exit;
     }
 
     /**

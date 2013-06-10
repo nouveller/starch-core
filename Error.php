@@ -21,7 +21,16 @@ class Error
         $this->e = $e;
 
         if (ENV === 'development' || $e->important) {
-            $this->display();
+            if (class_exists('\\Whoops\\Run')) {
+                $whoops = new \Whoops\Run();
+                $whoops->pushHandler(new \Whoops\Handler\PrettyPageHandler());
+                $whoops->register();
+
+                throw $e;
+            } else {
+                $this->display();
+            }
+
             exit;
         } else {
             Log::log_to(APP . 'error.log', array($e->getMessage(), $e->getTraceAsString()));

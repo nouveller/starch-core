@@ -154,7 +154,11 @@ class PostType
      */
     public static function create(&$post)
     {
-        $class = '\Starch\Model\\' . self::$models[$post->post_type];
+        $class = null;
+
+        if (array_key_exists($post->post_type, self::$models)) {
+            $class = '\Starch\Model\\' . self::$models[$post->post_type];
+        }
 
         if (!class_exists($class)) {
             throw new Exception('Class "' . $class . '" not found - for post type "' . $post->post_type . '"');

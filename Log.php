@@ -8,13 +8,15 @@ namespace Starch\Core;
  */
 class Log
 {
+    static private $default = 'starch.log';
+
     /**
      * Logs arguments (Mixed / one per line) to app/log.txt
      * @return void
      */
     public static function log()
     {
-        self::output(APP . 'log.txt', func_get_args());
+        self::output(APP . self::$default, func_get_args());
     }
 
     /**

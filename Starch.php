@@ -15,11 +15,12 @@ class Starch {
     public static function go()
     {
         define('ENV', Config::get('environment') ? : 'production');
+        Error::setup();
 
         try {
+            Config::setup();
             PostType::load();
             Router::load();
-            Config::setup();
             include_once APP . 'theme.php';
         } catch (\Exception $e) {
             new Error($e);

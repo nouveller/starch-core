@@ -10,6 +10,16 @@ class Error
 {
     // The exception
     private $e;
+    private static $whoops = false;
+
+    public static function setup() {
+        if (ENV === 'development' && class_exists('\\Whoops\\Run')) {
+            $whoops = new \Whoops\Run();
+            $whoops->pushHandler(new \Whoops\Handler\PrettyPageHandler());
+            $whoops->register();
+            self::$whoops = true;
+        }
+    }
 
     /**
      * Constructor
@@ -21,11 +31,7 @@ class Error
         $this->e = $e;
 
         if (ENV === 'development' || $e->important) {
-            if (class_exists('\\Whoops\\Run')) {
-                $whoops = new \Whoops\Run();
-                $whoops->pushHandler(new \Whoops\Handler\PrettyPageHandler());
-                $whoops->register();
-
+            if (self::$whoops) {
                 throw $e;
             } else {
                 $this->display();

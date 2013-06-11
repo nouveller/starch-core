@@ -178,7 +178,8 @@ class MetaBoxes
         $name = $var['name'];
         $show_thumb = isset($var['thumb']) ? $var['thumb'] : true;
 
-        $value = $post ? $post->$name : null;
+        $attachment = $post ? $post->$name : null;
+        $value = null;
 
         ob_start();
 
@@ -190,11 +191,10 @@ class MetaBoxes
 
         ?><div class="media-upload<?= $show_thumb ? ' show-thumb' : '' ?>"><?php
 
-        if ($value && preg_match('/Attachment\(([0-9]+)\)/', $value, $matches)) {
-            $id = $matches[1];
-            $attach = \Starch\Model\Attachment::post($id);
-            $title = $attach->title;
-            $thumb = $attach->thumbnail();
+        if ($attachment && is_object($attachment) && get_class($attachment) === 'Starch\\Model\\Attachment') {
+            $title = $attachment->title;
+            $thumb = $attachment->thumbnail();
+            $value = 'Attachment(' . $attachment->id . ')';
 
             if ($show_thumb && $thumb) { ?>
 

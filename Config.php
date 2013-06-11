@@ -112,7 +112,7 @@ class Config
             if ($admin_scripts) {
                 add_action('admin_enqueue_scripts', function () use ($admin_scripts) {
                     foreach ($admin_scripts as $script) {
-                        wp_enqueue_script($script, ASSETS . 'admin/' . $script . 'js');
+                        wp_enqueue_script($script, ASSETS . 'admin/' . $script . '.js');
                     }
                 });
             }

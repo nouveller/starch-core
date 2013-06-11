@@ -183,7 +183,7 @@ class MetaBoxes
         ob_start();
 
         if (!static::$upload_script_included) { ?>
-            <script src="<?= ASSETS ?>admin/upload.js"></script>
+            <script src="<?= ASSETS ?>admin/_starch/upload.js"></script>
         <?php
             static::$upload_script_included = true;
         }

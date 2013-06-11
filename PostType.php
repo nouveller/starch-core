@@ -359,6 +359,10 @@ class PostType
 
         // Lazy load in
         if ($data) {
+            if (is_string($data) && preg_match('/Attachment\(([0-9]+)\)/', $data, $matches)) {
+                $data = \Starch\Model\Attachment::post($matches[1]);
+            }
+
             $this->post[$name] = $data;
             return $data;
         }

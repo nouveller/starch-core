@@ -190,10 +190,11 @@ class MetaBoxes
 
         ?><div class="media-upload<?= $show_thumb ? ' show-thumb' : '' ?>"><?php
 
-        if ($value) {
-            $attach = \Starch\Model\Attachment::post($value); //new \Starch\Model\Attachment($value);
+        if ($value && preg_match('/Attachment\(([0-9]+)\)/', $value, $matches)) {
+            $id = $matches[1];
+            $attach = \Starch\Model\Attachment::post($id);
             $title = $attach->title;
-            $thumb = $attach->thumbnail_url();
+            $thumb = $attach->thumbnail();
 
             if ($show_thumb && $thumb) { ?>
 

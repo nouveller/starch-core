@@ -67,6 +67,14 @@ class Attachment extends PostType
     {
         if ($this->id) {
             $img = wp_get_attachment_image_src($this->id, $size);
+
+            // if the image can't be found, check to see if it's a video
+            if (!$img) {
+                if ( preg_match('/video/', get_post_mime_type($this->id)) ) {
+                    return includes_url() . 'images/crystal/video.png';
+                }
+            }
+
             return $img[0];
         }
 

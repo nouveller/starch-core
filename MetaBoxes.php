@@ -73,7 +73,7 @@ class MetaBoxes
                     \Starch\Core\View::display($field['template'], $pass);
 
                     if (isset($field['js'])) {
-                        echo '<script src="' . ASSETS . 'js/' . $field['js'] . '.js"></script>';
+                        echo '<script src="' . ASSETS . 'admin/' . $field['js'] . '.js"></script>';
                     }
 
                     if ($uploads || isset($field['js'])) {
